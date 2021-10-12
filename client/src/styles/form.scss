@@ -1,0 +1,132 @@
+@import "settings/fonts";
+@import "settings/colors";
+
+body,html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: $base-font-family;
+  font-weight: 300;
+}
+
+.page-title {
+  position: absolute;
+  top: 0;
+  left: 80px;
+  color: $bg;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.page-container {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  border: 80px solid $form-bg;
+  border-right: none;
+  border-left: none;
+  background: $bg;
+
+
+  form {
+    width: 80%;
+    padding: 20px 30px;
+    background: $form-bg;
+    border-radius: 10px;
+
+    label {
+      text-transform: capitalize;
+      margin-bottom: 2px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 15px;
+      font-weight: 400;
+      outline: none;
+      border-radius: 5px;
+    }
+
+    .error-input {
+      border: 1px solid red;
+    }
+
+    .correct-input {
+      border: 1px solid green;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 5px;
+
+      .error-msg-wrapper {
+        height: 20px;
+        font-size: 0.75rem;
+        color: $error;
+      }
+    }
+
+    .btn {
+      padding: 10px 15px;
+      float: right;
+      font-size: 1.1rem;
+      font-weight: 400;
+      background: transparent;
+      border: 1px solid $vibrant;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: $vibrant;
+      color: white;
+      transition: background-color 200ms ease-in;
+    }
+
+    .btn:active {
+      transform: scale(.8);
+      transition: transform 100ms ease-in-out;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .page-container {
+    form {
+      width: 70%;
+    }
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .page-container {
+    border-right: 80px solid $form-bg;
+    border-left: 80px solid $form-bg;
+    form {
+      width: 60%;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .page-container {
+    form {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (min-width: 1368px) {
+  .page-container {
+    form {
+      width: 35%;
+    }
+  }
+}
