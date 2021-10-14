@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
 import * as yup from "yup";
-import {ErrorMessage} from '@hookform/error-message';
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
 import api from "../api";
 import "../styles/form.scss";
+import PageTitle from "../components/PageTitle";
+import PageContainer from "../components/PageContainer";
+import ErrorMsgContainer from "../components/ErrorMsgContainer";
+import InputWrapper from "../components/InputWrapper";
+import SubmitBtn from "../components/SubmitBtn";
 
 
 const Form = () => {
@@ -37,6 +41,8 @@ const Form = () => {
         const currentData = data;
         await api.insertEvent(currentData).then(res => {
             window.alert('Event created succesfully!');
+            console.log(currentData);
+            console.log(res);
         }).catch(error => {
             window.alert(error + " - try again later");
         })
@@ -52,10 +58,10 @@ const Form = () => {
 
     return (
         <>
-            <h1 className="page-title">Create-event.app</h1>
-            <div className="page-container">
+            <PageTitle />
+            <PageContainer>
                 <form onSubmit={handleSubmit(eventCreateHandler)}>
-                    <div className="firstname-wrapper">
+                    <InputWrapper>
                         <label htmlFor="firstName">first name</label>
                         <input type="text"
                                autoComplete="nope"
@@ -65,11 +71,9 @@ const Form = () => {
                                {...register("firstName")}
                                onChange={onChangeHandler}
                         />
-                        <div className="error-msg-wrapper">
-                            <ErrorMessage as={<div className={"error-message"}/>} errors={errors} name={"firstName"}/>
-                        </div>
-                    </div>
-                    <div className="lastname-wrapper">
+                        <ErrorMsgContainer errors={errors} name="firstName" />
+                    </InputWrapper>
+                    <InputWrapper>
                         <label htmlFor="lastName">last name</label>
                         <input type="text"
                                autoComplete="nope"
@@ -79,11 +83,9 @@ const Form = () => {
                                {...register("lastName")}
                                onChange={onChangeHandler}
                         />
-                        <div className="error-msg-wrapper">
-                            <ErrorMessage as={<div className={"error-message"}/>} errors={errors} name={"lastName"}/>
-                        </div>
-                    </div>
-                    <div className="email-wrapper">
+                        <ErrorMsgContainer errors={errors} name="lastName" />
+                    </InputWrapper>
+                    <InputWrapper>
                         <label htmlFor="email">email</label>
                         <input type="email"
                                autoComplete="nope"
@@ -93,11 +95,9 @@ const Form = () => {
                                {...register("email")}
                                onChange={onChangeHandler}
                         />
-                        <div className="error-msg-wrapper">
-                            <ErrorMessage as={<div className={"error-message"}/>} errors={errors} name={"email"}/>
-                        </div>
-                    </div>
-                    <div className="date-wrapper">
+                        <ErrorMsgContainer errors={errors} name="email" />
+                    </InputWrapper>
+                    <InputWrapper>
                         <label htmlFor="date">date</label>
                         <input type="date"
                                autoComplete="nope"
@@ -106,13 +106,11 @@ const Form = () => {
                                {...register("date")}
                                onChange={onChangeHandler}
                         />
-                        <div className="error-msg-wrapper">
-                            <ErrorMessage as={<div className={"error-message"}/>} errors={errors} name={"date"}/>
-                        </div>
-                    </div>
-                    <button type="submit" className="btn">Create event</button>
+                        <ErrorMsgContainer errors={errors} name="date" />
+                    </InputWrapper>
+                    <SubmitBtn />
                 </form>
-            </div>
+            </PageContainer>
         </>
     );
 };
