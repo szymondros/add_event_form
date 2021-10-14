@@ -42,7 +42,6 @@ const Form = () => {
         await api.insertEvent(currentData).then(res => {
             window.alert('Event created succesfully!');
             console.log(currentData);
-            console.log(res);
         }).catch(error => {
             window.alert(error + " - try again later");
         })
@@ -56,37 +55,44 @@ const Form = () => {
         }));
     }
 
-    const validationHandler = (e) => {
-        const { isInputValid, errorMessage } = validateInput(e.target.value);
-        setErrors(prev => ({
-            ...prev,
-            [e.target.name] : {
-                isInputValid: isInputValid,
-                errorMessage:  errorMessage
-            }
-        }))
-        console.log("blured");
+    const validationHandler = (e, type) => {
+        if (type === "email") {
+            const {isInputValid, errorMessage} = validateInput(e.target.value, type);
+            setErrors(prev => ({
+                ...prev,
+                [e.target.name]: {
+                    isInputValid: isInputValid,
+                    errorMessage: errorMessage
+                }
+            }))
+        } else {
+            const {isInputValid, errorMessage} = validateInput(e.target.value);
+            setErrors(prev => ({
+                ...prev,
+                [e.target.name]: {
+                    isInputValid: isInputValid,
+                    errorMessage: errorMessage
+                }
+            }))
+        }
+
+
     }
 
-    const validateInput = (checkingText) => {
-        // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        //
-        // if (emailRegex.exec(checkingText) !== null) {
-        //     return {
-        //         isInputValid: true,
-        //         errorMessage: ''
-        //     };
-        // } else {
-        //     return {
-        //         isInputValid: false,
-        //         errorMessage: 'This field is required.'
-        //     }
-        // }
+    const validateInput = (checkingText, checkingEmail) => {
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
         if (checkingText) {
-            return {
-                isInputValid: true,
-                errorMessage: ''
+            if (emailRegex.exec(checkingEmail) !== null) {
+                return {
+                    isInputValid: true,
+                    errorMessage: ''
+                }
+            } else {
+                return {
+                    isInputValid: false,
+                    errorMessage: 'e-mail address is not valid'
+                }
             }
         } else {
             return {
@@ -98,7 +104,7 @@ const Form = () => {
 
     return (
         <>
-            <PageTitle />
+            <PageTitle/>
             <PageContainer>
                 <form onSubmit={(e) => eventCreateHandler(e)}>
                     <InputWrapper>
@@ -112,7 +118,7 @@ const Form = () => {
                                onChange={(e) => onChangeHandler(e)}
                                onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors?.firstName} name="firstName" />
+                        <ErrorMsgContainer errors={errors?.firstName} name="firstName"/>
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="lastName">last name</label>
@@ -125,7 +131,7 @@ const Form = () => {
                                onChange={(e) => onChangeHandler(e)}
                                onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors?.lastName} />
+                        <ErrorMsgContainer errors={errors?.lastName}/>
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="email">email</label>
@@ -136,9 +142,9 @@ const Form = () => {
                                id="email"
                                placeholder="john.doe@mail.com"
                                onChange={(e) => onChangeHandler(e)}
-                               onBlur={(e) => validationHandler(e)}
+                               onBlur={(e) => validationHandler(e, e.target.name)}
                         />
-                        <ErrorMsgContainer errors={errors?.email} />
+                        <ErrorMsgContainer errors={errors?.email}/>
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="date">date</label>
@@ -150,9 +156,9 @@ const Form = () => {
                                onChange={(e) => onChangeHandler(e)}
                                onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors?.date} />
+                        <ErrorMsgContainer errors={errors?.date}/>
                     </InputWrapper>
-                    <SubmitBtn />
+                    <SubmitBtn/>
                 </form>
             </PageContainer>
         </>
