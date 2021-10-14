@@ -41,6 +41,7 @@ const Form = () => {
         const currentData = data;
         await api.insertEvent(currentData).then(res => {
             window.alert('Event created succesfully!');
+            console.log(res);
             console.log(currentData);
         }).catch(error => {
             window.alert(error + " - try again later");
@@ -55,44 +56,29 @@ const Form = () => {
         }));
     }
 
-    const validationHandler = (e, type) => {
-        if (type === "email") {
-            const {isInputValid, errorMessage} = validateInput(e.target.value, type);
-            setErrors(prev => ({
-                ...prev,
-                [e.target.name]: {
-                    isInputValid: isInputValid,
-                    errorMessage: errorMessage
-                }
-            }))
-        } else {
-            const {isInputValid, errorMessage} = validateInput(e.target.value);
-            setErrors(prev => ({
-                ...prev,
-                [e.target.name]: {
-                    isInputValid: isInputValid,
-                    errorMessage: errorMessage
-                }
-            }))
-        }
-
-
+    const validationHandler = (e, validationType) => {
+        const {isInputValid, errorMessage} = validateInput(e.target.value, validationType);
+        setErrors(prev => ({
+            ...prev,
+            [e.target.name]: {
+                isInputValid: isInputValid,
+                errorMessage: errorMessage
+            }
+        }))
     }
 
-    const validateInput = (checkingText, checkingEmail) => {
+    const validateInput = (isText, isValidationType) => {
         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-        if (checkingText) {
-            if (emailRegex.exec(checkingEmail) !== null) {
-                return {
-                    isInputValid: true,
-                    errorMessage: ''
-                }
-            } else {
-                return {
-                    isInputValid: false,
-                    errorMessage: 'e-mail address is not valid'
-                }
+        if (isText && isValidationType && emailRegex.exec(isText) === null) {
+            return {
+                isInputValid: false,
+                errorMessage: 'email is not valid'
+            }
+        } else if (isText) {
+            return {
+                isInputValid: true,
+                errorMessage: ''
             }
         } else {
             return {
@@ -101,7 +87,6 @@ const Form = () => {
             }
         }
     }
-
     return (
         <>
             <PageTitle/>
@@ -142,7 +127,7 @@ const Form = () => {
                                id="email"
                                placeholder="john.doe@mail.com"
                                onChange={(e) => onChangeHandler(e)}
-                               onBlur={(e) => validationHandler(e, e.target.name)}
+                               onBlur={(e) => validationHandler(e, "email")}
                         />
                         <ErrorMsgContainer errors={errors?.email}/>
                     </InputWrapper>
