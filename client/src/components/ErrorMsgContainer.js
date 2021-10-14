@@ -4,7 +4,7 @@ const ErrorMsgContainer = ({errors, name}) => {
     return (
         <div className="error-msg-wrapper">
             {
-                errors.isInputValid ? <></> : <span>{errors?.errorMessage}</span>
+                errors?.isInputValid ? <></> : <span>{errors?.errorMessage}</span>
             }
         </div>
     );
