@@ -1,7 +1,4 @@
 import React, {useState} from 'react';
-import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
 import api from "../api";
 import "../styles/form.scss";
 import PageTitle from "../components/PageTitle";
@@ -20,24 +17,27 @@ const Form = () => {
         date: "",
     })
 
-    const validationSchema = yup.object().shape({
-        firstName: yup.string()
-            .required("this field is required"),
-        lastName: yup.string()
-            .required("this field is required"),
-        email: yup.string()
-            .required("this field is required")
-            .email("email address is not valid"),
-        date: yup.string()
-            .required("this field is required"),
-    });
+    const [errors, setErrors] = useState({
+        firstName: {
+            isInputValid: true,
+            errorMessage: ''
+        },
+        lastName: {
+            isInputValid: true,
+            errorMessage: ''
+        },
+        email: {
+            isInputValid: true,
+            errorMessage: ''
+        },
+        date: {
+            isInputValid: true,
+            errorMessage: ''
+        },
+    })
 
-    const {handleSubmit, register, formState: {errors}, reset} = useForm({
-        mode: "onBlur",
-        resolver: yupResolver(validationSchema)
-    });
-
-    const eventCreateHandler = async () => {
+    const eventCreateHandler = async (e) => {
+        e.preventDefault();
         const currentData = data;
         await api.insertEvent(currentData).then(res => {
             window.alert('Event created succesfully!');
@@ -46,67 +46,111 @@ const Form = () => {
         }).catch(error => {
             window.alert(error + " - try again later");
         })
-        reset();
     }
 
     const onChangeHandler = (e) => {
         setData(prev => ({
             ...prev,
             [e.target.name]: e.target.value
+
         }));
+    }
+
+    const validationHandler = (e) => {
+        const { isInputValid, errorMessage } = validateInput(e.target.value);
+        setErrors(prev => ({
+            ...prev,
+            [e.target.name] : {
+                isInputValid: isInputValid,
+                errorMessage:  errorMessage
+            }
+        }))
+        console.log("blured");
+    }
+
+    const validateInput = (checkingText) => {
+        // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        //
+        // if (emailRegex.exec(checkingText) !== null) {
+        //     return {
+        //         isInputValid: true,
+        //         errorMessage: ''
+        //     };
+        // } else {
+        //     return {
+        //         isInputValid: false,
+        //         errorMessage: 'This field is required.'
+        //     }
+        // }
+
+        if (checkingText) {
+            return {
+                isInputValid: true,
+                errorMessage: ''
+            }
+        } else {
+            return {
+                isInputValid: false,
+                errorMessage: 'This field is required'
+            }
+        }
     }
 
     return (
         <>
             <PageTitle />
             <PageContainer>
-                <form onSubmit={handleSubmit(eventCreateHandler)}>
+                <form onSubmit={(e) => eventCreateHandler(e)}>
                     <InputWrapper>
                         <label htmlFor="firstName">first name</label>
                         <input type="text"
+                               name="firstName"
                                autoComplete="nope"
-                               className={!errors?.firstName ? "correct-input" : "error-input"}
+                               className={errors?.firstName?.isInputValid ? "correct-input" : "error-input"}
                                id="firstName"
                                placeholder="John"
-                               {...register("firstName")}
-                               onChange={onChangeHandler}
+                               onChange={(e) => onChangeHandler(e)}
+                               onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors} name="firstName" />
+                        <ErrorMsgContainer errors={errors?.firstName} name="firstName" />
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="lastName">last name</label>
                         <input type="text"
+                               name="lastName"
                                autoComplete="nope"
-                               className={!errors?.lastName ? "correct-input" : "error-input"}
+                               className={errors?.lastName?.isInputValid ? "correct-input" : "error-input"}
                                id="lastName"
                                placeholder="Doe"
-                               {...register("lastName")}
-                               onChange={onChangeHandler}
+                               onChange={(e) => onChangeHandler(e)}
+                               onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors} name="lastName" />
+                        <ErrorMsgContainer errors={errors?.lastName} />
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="email">email</label>
                         <input type="email"
+                               name="email"
                                autoComplete="nope"
-                               className={!errors?.email ? "correct-input" : "error-input"}
+                               className={errors?.email?.isInputValid ? "correct-input" : "error-input"}
                                id="email"
                                placeholder="john.doe@mail.com"
-                               {...register("email")}
-                               onChange={onChangeHandler}
+                               onChange={(e) => onChangeHandler(e)}
+                               onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors} name="email" />
+                        <ErrorMsgContainer errors={errors?.email} />
                     </InputWrapper>
                     <InputWrapper>
                         <label htmlFor="date">date</label>
                         <input type="date"
+                               name="date"
                                autoComplete="nope"
-                               className={!errors?.date ? "correct-input" : "error-input"}
+                               className={errors?.date?.isInputValid ? "correct-input" : "error-input"}
                                id="date"
-                               {...register("date")}
-                               onChange={onChangeHandler}
+                               onChange={(e) => onChangeHandler(e)}
+                               onBlur={(e) => validationHandler(e)}
                         />
-                        <ErrorMsgContainer errors={errors} name="date" />
+                        <ErrorMsgContainer errors={errors?.date} />
                     </InputWrapper>
                     <SubmitBtn />
                 </form>
