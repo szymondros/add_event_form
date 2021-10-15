@@ -6,6 +6,8 @@ import PageContainer from "../components/PageContainer";
 import InputWrapper from "../components/InputWrapper";
 import SubmitBtn from "../components/SubmitBtn";
 import Input from "../components/Input";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Form = () => {
@@ -40,15 +42,19 @@ const Form = () => {
             e.preventDefault();
             const currentErrors = errors;
             const currentData = data;
-            await api.insertEvent(currentData).then(res => {
-                window.alert('Event created succesfully!');
-                console.log(res);
-                console.log(currentData);
-            }).catch(error => {
-                window.alert(error + " - try again later");
-            })
-        }
+            if (submitValidate(currentErrors) === true) {
+                await api.insertEvent(currentData).then(res => {
+                    resetInputs();
+                    console.log(res);
+                    toast.success('Event created succesfully!', toastStyles.success);
+                }).catch(error => {
+                    toast.error("" + error, toastStyles.error);
+                })
+            } else {
+                toast.error("Please correct the form", toastStyles.error);
 
+            }
+        }
 
         const onChangeHandler = (e) => {
             setData(prev => ({
@@ -58,8 +64,8 @@ const Form = () => {
             }));
         }
 
-        const validationHandler = (e, validationType) => {
-            const {isInputValid, errorMessage} = validateInput(e.target.value, validationType);
+        const blurValidationHandler = (e, validationType) => {
+            const {isInputValid, errorMessage} = blurValidate(e.target.value, validationType);
             setErrors(prev => ({
                 ...prev,
                 [e.target.name]: {
@@ -69,7 +75,25 @@ const Form = () => {
             }))
         }
 
-        const validateInput = (isText, isValidationType) => {
+        const submitValidate = (errors) => {
+            if (errors.email.isInputValid === false || errors.firstName.isInputValid === false
+                || errors.lastName.isInputValid === false || errors.date.isInputValid === false) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        const resetInputs = () => {
+            setData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                date: ""
+            })
+        }
+
+        const blurValidate = (isText, isValidationType) => {
             const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
             if (isText && isValidationType && emailRegex.exec(isText) === null) {
@@ -89,6 +113,28 @@ const Form = () => {
                 }
             }
         }
+
+        const toastStyles = {
+            success: {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            },
+            error: {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            }
+        }
+
         return (
             <>
                 <PageTitle/>
@@ -101,7 +147,8 @@ const Form = () => {
                                    placeholder="John"
                                    errors={errors?.firstName}
                                    onChangeHandler={onChangeHandler}
-                                   validationHandler={validationHandler}
+                                   validationHandler={blurValidationHandler}
+                                   value={data?.firstName}
                             />
                         </InputWrapper>
                         <InputWrapper>
@@ -111,7 +158,8 @@ const Form = () => {
                                    placeholder="Doe"
                                    errors={errors?.lastName}
                                    onChangeHandler={onChangeHandler}
-                                   validationHandler={validationHandler}
+                                   validationHandler={blurValidationHandler}
+                                   value={data?.lastName}
                             />
                         </InputWrapper>
                         <InputWrapper>
@@ -121,7 +169,8 @@ const Form = () => {
                                    placeholder="john.doe@mail.com"
                                    errors={errors?.email}
                                    onChangeHandler={onChangeHandler}
-                                   validationHandler={(e) => validationHandler(e, "email")}
+                                   validationHandler={(e) => blurValidationHandler(e, "email")}
+                                   value={data?.email}
                             />
                         </InputWrapper>
                         <InputWrapper>
@@ -131,12 +180,14 @@ const Form = () => {
                                    placeholder="25.10.2021"
                                    errors={errors?.date}
                                    onChangeHandler={onChangeHandler}
-                                   validationHandler={validationHandler}
+                                   validationHandler={blurValidationHandler}
+                                   value={data?.date}
                             />
                         </InputWrapper>
                         <SubmitBtn/>
                     </form>
                 </PageContainer>
+                <ToastContainer/>
             </>
         );
     }

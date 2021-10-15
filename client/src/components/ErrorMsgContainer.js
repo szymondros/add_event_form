@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ErrorMsgContainer = ({errors, name}) => {
+const ErrorMsgContainer = ({errors}) => {
     return (
         <div className="error-msg-wrapper">
             {

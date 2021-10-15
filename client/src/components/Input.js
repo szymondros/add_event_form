@@ -1,12 +1,13 @@
 import React from 'react';
 import ErrorMsgContainer from "./ErrorMsgContainer";
 
-const Input = ({label, name, type, placeholder, errors, onChangeHandler, validationHandler}) => {
+const Input = ({label, name, type, placeholder, errors, onChangeHandler, validationHandler, value}) => {
     return (
         <>
             <label htmlFor={name}>{label}</label>
             <input type={type}
                    name={name}
+                   value={value}
                    autoComplete="nope"
                    className={errors?.isInputValid ? "correct-input" : "error-input"}
                    id={name}
