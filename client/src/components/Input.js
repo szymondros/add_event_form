@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorMsgContainer from "./ErrorMsgContainer";
+import ErrorMsgContainer from './ErrorMsgContainer';
 
 const Input = ({label, name, type, placeholder, errors, onChangeHandler, validationHandler, value}) => {
     return (
@@ -8,14 +8,14 @@ const Input = ({label, name, type, placeholder, errors, onChangeHandler, validat
             <input type={type}
                    name={name}
                    value={value}
-                   autoComplete="nope"
-                   className={errors?.isInputValid ? "correct-input" : "error-input"}
+                   autoComplete='nope'
+                   className={errors?.isInputValid ? 'correct-input' : 'error-input'}
                    id={name}
                    placeholder={placeholder}
                    onChange={(e) => onChangeHandler(e)}
                    onBlur={(e) => validationHandler(e)}
             />
-            <ErrorMsgContainer errors={errors} name="firstName"/>
+            <ErrorMsgContainer errors={errors} name='firstName'/>
         </>
     );
 };

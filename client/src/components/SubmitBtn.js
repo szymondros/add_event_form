@@ -3,7 +3,7 @@ import React from 'react';
 const SubmitBtn = () => {
     return (
         <>
-            <button type="submit" className="btn">Create event</button>
+            <button type='submit' className='btn'>Create event</button>
         </>
     );
 };
