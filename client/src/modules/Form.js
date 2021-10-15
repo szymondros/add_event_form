@@ -21,19 +21,19 @@ const Form = () => {
 
         const [errors, setErrors] = useState({
             firstName: {
-                isInputValid: true,
+                isInputValid: false,
                 errorMessage: ''
             },
             lastName: {
-                isInputValid: true,
+                isInputValid: false,
                 errorMessage: ''
             },
             email: {
-                isInputValid: true,
+                isInputValid: false,
                 errorMessage: ''
             },
             date: {
-                isInputValid: true,
+                isInputValid: false,
                 errorMessage: ''
             },
         })
