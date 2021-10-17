@@ -44,12 +44,12 @@ const Form = () => {
                 await api.insertEvent(data).then(res => {
                     resetInputs();
                     console.log(res);
-                    toast.success('Event created succesfully!', toastStyles.success);
+                    toast.success('Event created succesfully!', toastStyles);
                 }).catch(error => {
-                    toast.error('' + error, toastStyles.error);
+                    toast.error('' + error, toastStyles);
                 })
             } else {
-                toast.error('Please correct the form', toastStyles.error);
+                toast.error('Please correct the form', toastStyles);
 
             }
         }
@@ -109,29 +109,18 @@ const Form = () => {
         }
 
         const toastStyles = {
-            success: {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined
-            },
-            error: {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            }
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
         }
 
         return (
             <>
-                <PageTitle/>
+                <PageTitle text="Create-event.app"/>
                 <PageContainer>
                     <form onSubmit={(e) => eventCreateHandler(e)}>
                         <InputWrapper>

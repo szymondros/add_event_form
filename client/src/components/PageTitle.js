@@ -1,9 +1,9 @@
 import React from 'react';
 
-const PageTitle = () => {
+const PageTitle = ({text}) => {
     return (
         <>
-            <h1 className='page-title'>Create-event.app</h1>
+            <h1 className='page-title' data-testid='page-title'>{text}</h1>
         </>
     );
 };
