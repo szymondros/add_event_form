@@ -5,7 +5,8 @@ const Input = ({label, name, type, placeholder, errors, onChangeHandler, validat
     return (
         <>
             <label htmlFor={name}>{label}</label>
-            <input type={type}
+            <input data-testid="input"
+                   type={type}
                    name={name}
                    value={value}
                    autoComplete='nope'
@@ -15,7 +16,7 @@ const Input = ({label, name, type, placeholder, errors, onChangeHandler, validat
                    onChange={(e) => onChangeHandler(e)}
                    onBlur={(e) => validationHandler(e)}
             />
-            <ErrorMsgContainer errors={errors} name='firstName'/>
+            <ErrorMsgContainer errors={errors} />
         </>
     );
 };
