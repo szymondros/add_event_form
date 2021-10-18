@@ -21,3 +21,6 @@ app.get('/', (req, res) => {
 app.use('/api', eventRouter);
 
 app.listen(apiPort, () => console.log(`server running on port ${apiPort}`));
+
+
+module.exports = app;
