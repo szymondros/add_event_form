@@ -1,5 +1,6 @@
 import React from 'react';
 import ErrorMsgContainer from './ErrorMsgContainer';
+import propTypes from "prop-types";
 
 const Input = ({label, name, type, placeholder, errors, onChangeHandler, validationHandler, value}) => {
     return (
@@ -20,5 +21,16 @@ const Input = ({label, name, type, placeholder, errors, onChangeHandler, validat
         </>
     );
 };
+
+Input.propTypes = {
+    label: propTypes.string,
+    name: propTypes.string,
+    type: propTypes.string,
+    placeholder: propTypes.string,
+    errors: propTypes.object,
+    onChangeHandler: propTypes.func,
+    validationHandler: propTypes.func,
+    value: propTypes.string
+}
 
 export default Input;

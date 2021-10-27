@@ -40,13 +40,14 @@ const Form = () => {
 
         const eventCreateHandler = async (e) => {
             e.preventDefault();
-            if (submitValidate(errors) === true) {
+            if (submitValidate(errors)) {
                 await api.insertEvent(data).then(res => {
                     resetInputs();
                     console.log(res);
                     toast.success('Event created succesfully!', toastStyles);
                 }).catch(error => {
                     toast.error('' + error, toastStyles);
+                    console.log(error);
                 })
             } else {
                 toast.error('Please correct the form', toastStyles);
@@ -90,7 +91,7 @@ const Form = () => {
         const blurValidate = (isText, isValidationType) => {
             const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-            if (isText && isValidationType && emailRegex.exec(isText) === null) {
+            if (isText && isValidationType && (emailRegex.exec(isText) === null)) {
                 return {
                     isInputValid: false,
                     errorMessage: 'email is not valid'
